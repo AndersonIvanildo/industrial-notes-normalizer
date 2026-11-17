@@ -13,15 +13,16 @@ from spellchecker import SpellChecker
 ROOT = Path(__file__).resolve().parent
 TOKEN = re.compile(r"(?<!\w)[^\W\d_]+(?!\w)")
 METHODS = {
-    "Regex": "Regras explícitas para espaços e abreviações. Muito rápido; não infere grafias.",
-    "Dicionário": "Regex + substituições exatas revisadas e acentuação do vocabulário. "
-    "Busca em tabela; só corrige variantes cadastradas.",
-    "Levenshtein": "Regex + menor número de inserções, remoções e substituições. "
-    "Busca no vocabulário usando RapidFuzz.",
-    "Damerau–Levenshtein": "Regex + distância de edição que também conta a troca de "
-    "letras adjacentes como uma operação; útil para macnal → mancal.",
-    "Jaro–Winkler": "Regex + similaridade que favorece prefixos iguais. "
-    "Rápido em palavras curtas, mas pode confundir termos parecidos.",
+    "Regex": "Aplica padrões de texto para organizar espaços e expandir abreviações, "
+    "como 'c/' para 'com'. Só altera o que tem uma regra definida.",
+    "Dicionário": "Consulta palavras e substituições cadastradas para corrigir erros "
+    "conhecidos e recuperar acentos, como 'flga' para 'folga'.",
+    "Levenshtein": "Procura no vocabulário a palavra que exige menos letras inseridas, "
+    "removidas ou substituídas, como 'mancl' para 'mancal'.",
+    "Damerau-Levenshtein": "Funciona como Levenshtein e também reconhece duas letras "
+    "vizinhas invertidas, como 'macnal' para 'mancal', contando uma única edição.",
+    "Jaro-Winkler": "Compara letras em comum e sua ordem, dando mais peso ao começo "
+    "da palavra. Sugere grafias parecidas, mas pode confundir palavras com o mesmo prefixo.",
 }
 ABBREVIATIONS = [
     (r"(?<!\w)c\s*/", "com "),
@@ -103,10 +104,10 @@ class Normalizer:
         candidates = [w for w in self.domain if abs(len(w) - len(key)) <= limit]
         scorer = {
             "Levenshtein": Levenshtein.distance,
-            "Damerau–Levenshtein": DamerauLevenshtein.distance,
-            "Jaro–Winkler": JaroWinkler.normalized_distance,
+            "Damerau-Levenshtein": DamerauLevenshtein.distance,
+            "Jaro-Winkler": JaroWinkler.normalized_distance,
         }[method]
-        cutoff = 1 - threshold if method == "Jaro–Winkler" else limit
+        cutoff = 1 - threshold if method == "Jaro-Winkler" else limit
         scored = process.extract(key, candidates, scorer=scorer, limit=2, score_cutoff=cutoff)
         if not scored:
             scored = process.extract(

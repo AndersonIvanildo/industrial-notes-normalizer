@@ -6,7 +6,7 @@ A interface e os exemplos estão em português.
 
 ## Executar
 
-Requisitos: Python 3.12–3.14 e [uv](https://docs.astral.sh/uv/).
+Requisitos: Python 3.12 a 3.14 e [uv](https://docs.astral.sh/uv/).
 
 ```bash
 uv sync --locked
@@ -34,9 +34,9 @@ uv export --frozen --no-dev --no-hashes --format requirements-txt --no-emit-proj
 
 ## O que explorar no app
 
-- **Dataset:** filtros por período, classe e equipamento; gráficos, textos
+- **Dataset:** filtros por período e classe; gráficos, textos
   repetidos e palavras fora do vocabulário para revisão.
-- **Como funciona:** os cinco métodos, suas regras e limitações.
+- **Como funciona:** cards com explicações resumidas dos cinco métodos, suas regras e limitações.
 - **Comparação:** original e resultado, destaque de alterações, tempos medidos,
   parâmetros de distância/similaridade e download CSV com os cinco resultados.
 - **Seu texto:** entrada de até 10 mil caracteres, resultado de cada método e download.
@@ -82,8 +82,8 @@ livre: são informações úteis para interpretar as ocorrências.
 | Regex | Nenhuma: regras de abreviações e espaços | Varreduras lineares; só cobre padrões conhecidos |
 | Dicionário | Substituições exatas revisadas e acentuação conhecida | Consulta em tabela; não generaliza erros novos |
 | Levenshtein | Menor distância por inserção, remoção e substituição | Busca compilada; uma inversão costuma custar duas edições |
-| Damerau–Levenshtein | Inclui transposição adjacente como uma edição | Bom para letras invertidas; ainda pode confundir palavras próximas |
-| Jaro–Winkler | Similaridade com preferência por prefixos comuns | Corte por similaridade; pode favorecer prefixos incorretamente |
+| Damerau-Levenshtein | Inclui transposição adjacente como uma edição | Bom para letras invertidas; ainda pode confundir palavras próximas |
+| Jaro-Winkler | Similaridade com preferência por prefixos comuns | Corte por similaridade; pode favorecer prefixos incorretamente |
 
 ### Dicionário português
 
@@ -113,8 +113,8 @@ de domínio, não necessariamente o mínimo global de distância no português.
 Empates entre os melhores candidatos da etapa escolhida mantêm o original.
 
 Palavras desconhecidas com menos de quatro letras são preservadas na busca
-aproximada. A distância é limitada a uma edição para 4–5 letras e até duas para
-palavras maiores. Jaro–Winkler usa limiar padrão de 0,92 e a mesma janela de
+aproximada. A distância é limitada a uma edição para 4 a 5 letras e até duas para
+palavras maiores. Jaro-Winkler usa limiar padrão de 0,92 e a mesma janela de
 comprimento para restringir candidatos; ele não usa distância de edição para
 decidir a similaridade. Códigos alfanuméricos como `RO001`, `220V` e `50cv` não
 sofrem correção lexical, mas são convertidos para minúsculas.
@@ -135,15 +135,15 @@ textos válidos. Esses exemplos foram escolhidos depois de explorar o dataset:
 não são um conjunto independente nem comprovam acurácia em produção.
 
 Medição local de referência em 17/11/2026, com os 3.000 relatos, distância máxima
-2 e limiar Jaro–Winkler 0,92 (tempos arredondados, dependentes da máquina e carga):
+2 e limiar Jaro-Winkler 0,92 (tempos arredondados, dependentes da máquina e carga):
 
 | Método | Tempo do lote | Relatos alterados | Acertos nos 22 exemplos |
 |---|---:|---:|---:|
 | Regex | 127 ms | 1.471 | 7 |
 | Dicionário | 190 ms | 2.753 | 21 |
 | Levenshtein | 450 ms | 2.804 | 20 |
-| Damerau–Levenshtein | 357 ms | 2.811 | 22 |
-| Jaro–Winkler | 670 ms | 2.811 | 22 |
+| Damerau-Levenshtein | 357 ms | 2.811 | 22 |
+| Jaro-Winkler | 670 ms | 2.811 | 22 |
 
 As alterações incluem expansão de abreviações e restauração de acentos. O método
 Dicionário não corrigiu a inserção `rolammento`; Levenshtein preservou `ruiod` e
@@ -152,7 +152,7 @@ exemplos escolhidos, mas isso não comprova superioridade geral. O app recalcula
 as medidas para os filtros e parâmetros selecionados.
 
 Para o primeiro uso, regras e substituições revisadas oferecem previsibilidade.
-Damerau–Levenshtein é uma boa hipótese para investigar transposições. A escolha
+Damerau-Levenshtein é uma boa hipótese para investigar transposições. A escolha
 final deve usar uma amostra separada, rotulada por alguém do domínio, medindo
 acertos, erros restantes e correções indevidas. Os métodos não entendem contexto,
 concordância ou significado: `cadeira` continuará válida, e a regra `n → não`
@@ -184,6 +184,6 @@ CSV e o fluxo Streamlit com filtro e entrada de texto.
 
 Referências: [dicionários pyspellchecker](https://pyspellchecker.readthedocs.io/en/latest/),
 [Levenshtein](https://rapidfuzz.github.io/RapidFuzz/Usage/distance/Levenshtein.html),
-[Damerau–Levenshtein](https://rapidfuzz.github.io/RapidFuzz/Usage/distance/DamerauLevenshtein.html),
-[Jaro–Winkler](https://rapidfuzz.github.io/RapidFuzz/Usage/distance/JaroWinkler.html),
+[Damerau-Levenshtein](https://rapidfuzz.github.io/RapidFuzz/Usage/distance/DamerauLevenshtein.html),
+[Jaro-Winkler](https://rapidfuzz.github.io/RapidFuzz/Usage/distance/JaroWinkler.html),
 [cache Streamlit](https://docs.streamlit.io/develop/concepts/architecture/caching).

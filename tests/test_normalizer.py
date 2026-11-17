@@ -47,7 +47,7 @@ def test_exact_dictionary_and_accents(normalizer):
 def test_transposition_and_edit_limit(normalizer):
     assert Levenshtein.distance("macnal", "mancal") == 2
     assert DamerauLevenshtein.distance("macnal", "mancal") == 1
-    assert normalizer.normalize_many(["macnal"], "Damerau–Levenshtein", 1) == ["mancal"]
+    assert normalizer.normalize_many(["macnal"], "Damerau-Levenshtein", 1) == ["mancal"]
     assert normalizer.normalize_many(["macnal"], "Levenshtein", 1) != ["mancal"]
     assert normalizer.normalize_many(["mancl"], "Levenshtein") == ["mancal"]
 
@@ -58,7 +58,7 @@ def test_validation(normalizer):
     with pytest.raises(ValueError):
         normalizer.normalize_many(["texto"], "Levenshtein", 3)
     with pytest.raises(ValueError):
-        normalizer.normalize_many(["texto"], "Jaro–Winkler", threshold=0.3)
+        normalizer.normalize_many(["texto"], "Jaro-Winkler", threshold=0.3)
     with pytest.raises(TypeError):
         normalizer.normalize_many([None], "Regex")
 

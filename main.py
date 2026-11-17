@@ -54,7 +54,6 @@ st.caption("Processamento local • cinco métodos determinísticos • dados or
 
 with st.sidebar:
     st.header("Recorte dos dados")
-    equipments = st.multiselect("Equipamentos", sorted(data.equipamento.unique()))
     classes = st.multiselect("Classes", sorted(data.classe.unique()))
     dates = st.date_input(
         "Período",
@@ -64,9 +63,9 @@ with st.sidebar:
     )
     st.header("Correção aproximada")
     distance = st.select_slider("Distância máxima de edição", options=[1, 2], value=2)
-    threshold = st.slider("Similaridade mínima Jaro–Winkler", 0.80, 1.0, 0.92, 0.01)
+    threshold = st.slider("Similaridade mínima Jaro-Winkler", 0.80, 1.0, 0.92, 0.01)
     st.caption(
-        "Palavras de 4–5 letras aceitam no máximo uma edição. "
+        "Palavras de 4 a 5 letras aceitam no máximo uma edição. "
         "Jaro usa o limiar de similaridade e a mesma janela de comprimento."
     )
     st.caption(
@@ -75,8 +74,6 @@ with st.sidebar:
     )
 
 filtered = data.copy()
-if equipments:
-    filtered = filtered[filtered.equipamento.isin(equipments)]
 if classes:
     filtered = filtered[filtered.classe.isin(classes)]
 if len(dates) == 2:
@@ -111,7 +108,7 @@ with overview:
             for word, count in tokens.most_common()
             if word not in normalizer.lexicon and len(word) >= 4
         ]
-        with st.expander("Palavras fora do vocabulário — pistas para revisão"):
+        with st.expander("Palavras fora do vocabulário: pistas para revisão"):
             st.caption("Não são necessariamente erros: podem ser termos técnicos ou nomes válidos.")
             st.dataframe(
                 pd.DataFrame(unknown, columns=["Palavra", "Ocorrências"]),
@@ -126,8 +123,15 @@ with methods:
         "Todos os métodos convertem para minúsculas, normalizam espaços e expandem "
         "abreviações com regex. Os demais acrescentam uma etapa de correção lexical."
     )
-    for name, description in METHODS.items():
-        st.markdown(f"**{name}** — {description}")
+    with st.container(border=True):
+        techniques = list(METHODS.items())
+        for start in range(0, len(techniques), 3):
+            for column, (name, description) in zip(
+                st.columns(3), techniques[start : start + 3], strict=False
+            ):
+                with column.container(border=True):
+                    st.markdown(f"### {name}")
+                    st.write(description)
     st.info(
         "Levenshtein, Damerau e Jaro consultam o dicionário português do pyspellchecker "
         "mais o vocabulário industrial. O método Dicionário usa esses mesmos termos "
