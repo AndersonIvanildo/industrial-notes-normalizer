@@ -1,0 +1,23 @@
+categoria,entrada,esperado
+abreviação,equip. c/ temp. alta,equipamento com temperatura alta
+abreviação,bba s/ press.,bomba sem pressão
+abreviação,mot. n parte,motor não parte
+abreviação,sem peca no almox,sem peça no almoxarifado
+omissão,flga no mancl,folga no mancal
+omissão,liha parada,linha parada
+omissão,boma parada,bomba parada
+substituição,compresor parado,compressor parado
+transposição,macnal com ruiod,mancal com ruído
+transposição,acoplamneto do motor,acoplamento do motor
+transposição,infomra o truno,informa o turno
+transposição,solicitdao apoio,solicitado apoio
+acentuação,valvula com vibracao,válvula com vibração
+acentuação,protecao e seguranca,proteção e segurança
+acentuação,ruido no rele termico,ruído no relé térmico
+inserção,rolammento do motor,rolamento do motor
+preservação,CLP IHM OS 50cv 220V RO001,clp ihm os 50cv 220v ro001
+preservação,não abre a válvula,não abre a válvula
+preservação,cadeira perto da bomba,cadeira perto da bomba
+preservação,xyzqk,xyzqk
+português,afericao,aferição
+português,relatorio,relatório

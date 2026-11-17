@@ -1,0 +1,21 @@
+[project]
+name = "industrial-notes-normalizer"
+version = "0.1.0"
+description = "Laboratório de normalização de relatos industriais com cinco métodos leves."
+readme = "README.md"
+requires-python = ">=3.12,<3.15"
+dependencies = [
+    "pandas>=3.1.1",
+    "pyspellchecker",
+    "rapidfuzz>=3.14.6",
+    "streamlit>=1.67.0",
+]
+
+[tool.ruff]
+line-length = 100
+
+[dependency-groups]
+dev = [
+    "pytest>=9.2.0",
+    "ruff>=0.17.5",
+]
